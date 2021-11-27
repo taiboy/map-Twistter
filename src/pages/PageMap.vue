@@ -1,7 +1,7 @@
 <template>
    <q-page padding class="flex">
     <q-card style="flex:1">
-      <l-map @ready="onReady" @locationfound="onLocationFound" :zoom="zoom" :center="center">
+      <l-map ref="myMap" @ready="onReady" @locationfound="onLocationFound" :zoom="zoom" :center="center">
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       </l-map>
     </q-card>
@@ -32,7 +32,7 @@ export default {
       mapObject.locate()
     },
     onLocationFound (location) {
-      console.log(location)
+      this.center = L.latLng(location.latitude, location.longitude)
     }
   }
 }
