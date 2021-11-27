@@ -68,15 +68,16 @@
           <q-item-section class="text-h6 text-weight-bold">About</q-item-section>
         </q-item>
         <q-item
+          to="/map"
           v-ripple
           clickable
           exact
         >
           <q-item-section avatar>
-            <q-icon name="settings" size="md" />
+            <q-icon name="map" size="md" />
           </q-item-section>
 
-          <q-item-section class="text-h6 text-weight-bold">Settings</q-item-section>
+          <q-item-section class="text-h6 text-weight-bold">Map</q-item-section>
         </q-item>
       </q-list>
 
