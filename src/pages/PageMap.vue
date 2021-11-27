@@ -17,27 +17,35 @@
             :url="tileProvider.url"
             :attribution="tileProvider.attribution"
             layer-type="overlay"></l-tile-layer>
+        <l-geo-json
+          :geojson="geojson"
+          :options="options"
+          :options-style="styleFunction"
+        ></l-geo-json>
       </l-map>
     </q-card>
   </q-page>
 </template>
 
 <script>
-import { LMap, LTileLayer, LControlLayers } from 'vue2-leaflet'
+import { LMap, LTileLayer, LControlLayers, LGeoJson } from 'vue2-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import axios from 'axios'
 
 export default {
   name: 'PageMap',
   components: {
     LMap,
     LTileLayer,
-    LControlLayers
+    LControlLayers,
+    LGeoJson
   },
   data () {
     return {
       zoom: 13,
       center: L.latLng(36, 140),
+      geojson: null,
       tileProviders: [
         {
           name: '洪水浸水想定区域（想定最大規模）',
@@ -60,12 +68,49 @@ export default {
       ]
     }
   },
+  computed: {
+    options () {
+      return {
+        onEachFeature: this.onEachFeatureFunction
+      }
+    },
+    styleFunction () {
+      const fillColor = this.fillColor // important! need touch fillColor in computed for re-calculate when change fillColor
+      return () => {
+        return {
+          weight: 2,
+          color: '#ECEFF1',
+          opacity: 1,
+          fillColor: fillColor,
+          fillOpacity: 1
+        }
+      }
+    },
+    onEachFeatureFunction () {
+      if (!this.enableTooltip) {
+        return () => {}
+      }
+      return (feature, layer) => {
+        layer.bindTooltip(
+          '<div>code:' +
+            feature.properties.code +
+            '</div><div>nom: ' +
+            feature.properties.nom +
+            '</div>',
+          { permanent: false, sticky: true }
+        )
+      }
+    }
+  },
   methods: {
     onReady (mapObject) {
       mapObject.locate()
     },
     onLocationFound (location) {
       this.center = L.latLng(location.latitude, location.longitude)
+      axios.get('https://www.j-shis.bosai.go.jp/map/api/pshm/Y2021/AVR/TTL_MTTL/meshinfo.geojson?position=' + location.longitude + ',' + location.latitude + '&epsg=4301')
+        .then(response => (this.geojson = response))
+        .catch(error => console.log(error))
     }
   }
 }
