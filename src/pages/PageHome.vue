@@ -14,7 +14,7 @@
           >
             <template v-slot:before>
               <q-avatar size="xl">
-                <img :src="avatar">
+                <img :src="avatar1">
               </q-avatar>
             </template>
           </q-input>
@@ -54,8 +54,14 @@
           :key="qweet.id"
         >
           <q-item-section avatar top>
-            <q-avatar size="xl">
-              <img :src="avatar">
+            <q-avatar v-if ="qweet.date % 3 == 0" size="xl">
+              <img :src="avatar1">
+            </q-avatar>
+            <q-avatar v-if ="qweet.date % 3 == 1" size="xl">
+              <img :src="avatar2">
+            </q-avatar>
+            <q-avatar v-if ="qweet.date % 3 == 2" size="xl">
+              <img :src="avatar3">
             </q-avatar>
           </q-item-section>
 
@@ -63,12 +69,26 @@
             <q-item-label class="text-subtitle1">
               <div class="row justify-between">
                 <div>
-                  <strong>
-                    Marvin Espira
+                  <strong v-if ="qweet.date % 3 == 0">
+                    匿名のウォンバット
                   </strong>
-                  <span class="text-grey-7">
-                @marvin_espira
-                <br class="lt-sm">&bull; {{ qweet.date | relativeDate }}
+                  <strong v-if ="qweet.date % 3 == 1">
+                    匿名のチュパカブラ
+                  </strong>
+                  <strong v-if ="qweet.date % 3 == 2">
+                    匿名のウーパールーパー
+                  </strong>
+                  <span class="text-grey-7" v-if ="qweet.date % 3 == 0">
+                    @wonbt
+                    <br class="lt-sm">&bull; {{ qweet.date | relativeDate }}
+                  </span>
+                  <span class="text-grey-7" v-if ="qweet.date % 3 == 1">
+                    @chupakaburaa
+                    <br class="lt-sm">&bull; {{ qweet.date | relativeDate }}
+                  </span>
+                  <span class="text-grey-7" v-if ="qweet.date % 3 == 2">
+                    @uupaaruupaa
+                    <br class="lt-sm">&bull; {{ qweet.date | relativeDate }}
                   </span>
                 </div>
                 <q-btn class="float-right" size="12px" flat dense color="grey" round icon="more_horiz" />
@@ -147,7 +167,9 @@ export default {
     return {
       loading: false,
       newQweetContent: '',
-      avatar: 'https://cdn.quasar.dev/img/avatar4.jpg',
+      avatar1: 'https://3.bp.blogspot.com/-hzFbC11hI20/WOsv8kLdOZI/AAAAAAABDuA/XXFqESX5G5smsax6lWlypJAK8ogVHMGmgCLcB/s400/kega_sankakukin5_sagyouin_man.png',
+      avatar2: 'https://1.bp.blogspot.com/-lQvVaZVuCfs/XvcI4m2KdKI/AAAAAAABZts/6a_b9K3DrscSuAa_9lY6dDEb313PNnklwCNcBGAsYHQ/s1600/megane_hikaru_woman.png',
+      avatar3: 'http://2.bp.blogspot.com/-RYW9-3dP36k/UZmCE70VK_I/AAAAAAAATbU/YxXkOpJCSDY/s180-c/shizensaigai_resukyutai.png',
       confirm: false,
       qweetToBeDeleted: {},
       deviceType: [],
