@@ -29,7 +29,7 @@
             unelevated
             rounded
             color="primary"
-            label="Tweet"
+            label="送信"
             no-caps
           />
         </div>
@@ -203,7 +203,7 @@ export default {
       // eslint-disable-next-line no-unused-vars
       const newQweet = {
         content: this.newQweetContent,
-        date: Date.now(),
+        date: Date.now() - Date.now() % 3,
         retweeted: false,
         liked: false,
         platformName: this.deviceType[0],
@@ -297,7 +297,37 @@ export default {
       const platformName = Platform.is.name
       const operatingSys = Platform.is.platform
       this.deviceType.push(platformName, operatingSys)
+    },
+    getMissingPersonData () {
+      db.collection('qweets').orderBy('content').startAt('#行方不明者').endAt('#行方不明者' + '\uf8ff').get().then((querySnapshot) => {
+        querySnapshot.docChanges().forEach((change) => {
+          // console.log(change.doc.id, ' => ', change.doc.data())
+          const qweetChange = change.doc.data()
+          qweetChange.id = change.doc.id
+          // add qweet
+          if (change.type === 'added') {
+            // this.qweets.unshift(qweetChange)
+          }
+          // edit qweet
+          if (change.type === 'modified') {
+            const index = this.qweets.findIndex(qweet => qweet.id === qweetChange.id)
+            // Object.assign copies/assigns properties from one or more source Objects to a target Object
+            // Object.assign copies/assigns properties from one or more source Objects to a target Object
+            // In this case, we assign our local data, the Object (this.qweets) to qweetChange object to reflect changes to the UI (this.qweets) at the position Index
+            Object.assign(this.qweets[index], qweetChange)
+          }
+          // delete qweet
+          if (change.type === 'removed') {
+            // console.log('Removed qweet: ', qweetChange)
+            const index = this.qweets.findIndex(qweet => qweet.id === qweetChange.id)
+            this.qweets.splice(index, 1)
+          }
+        })
+      })
     }
+  },
+  created () {
+    this.$emit('qweetsData', this.qweets)
   },
   computed: {
     likedCount () {
