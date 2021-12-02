@@ -3,12 +3,14 @@ import firebase from 'firebase/app'
 import 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCdWlnfl5ayBsAs7aTCpilYyYjCNphGJVE',
-  authDomain: 'tgi-saigai-webapp.firebaseapp.com',
-  projectId: 'tgi-saigai-webapp',
-  storageBucket: 'tgi-saigai-webapp.appspot.com',
-  messagingSenderId: '51123335219',
-  appId: '1:51123335219:web:c252b8589318d2f37db346'
+  apiKey: 'AIzaSyD2Az5SMMlD3m0-AfjM_gbda7gsEJZ1_Ow',
+  authDomain: 'saigai-webapp-96548.firebaseapp.com',
+  databaseURL: 'https://saigai-webapp-96548-default-rtdb.firebaseio.com',
+  projectId: 'saigai-webapp-96548',
+  storageBucket: 'saigai-webapp-96548.appspot.com',
+  messagingSenderId: '312886205222',
+  appId: '1:312886205222:web:f6608724f33c2cc9397fe7',
+  measurementId: 'G-G3ZFNQ8HV8'
 }
 
 // Initialize Firebase
